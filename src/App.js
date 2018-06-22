@@ -6,7 +6,7 @@ import LoginPage from "./components/pages/LoginPage/LoginPage";
 class App extends Component {
   render() {
     return (
-      <div>
+      <div className="ui container">
         <Route path="/" exact component={HomePage} />
         <Route path="/login" exact component={LoginPage} />
       </div>

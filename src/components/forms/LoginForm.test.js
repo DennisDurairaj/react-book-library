@@ -1,13 +1,12 @@
 import React from "react";
 import { shallow, mount } from "enzyme";
 import LoginForm from "./LoginForm";
-import InlineError from "../messages/InlineError";
-import renderer from "react-test-renderer";
 
 describe("LoginForm component", () => {
   let wrapper;
+  const submit = jest.fn();
   beforeEach(() => {
-    wrapper = shallow(<LoginForm />);
+    wrapper = shallow(<LoginForm submit={submit} />);
   });
   it("Renders a Form component", () => {
     expect(wrapper.find("Form")).toHaveLength(1);
@@ -49,22 +48,10 @@ describe("LoginForm component", () => {
       };
       it("should have validation errors", () => {
         wrapper.setState({ data: data }, () => {
-          // wrapper
-          //   .instance()
-          //   .onSubmit()
-          //   .rejects(data => {
-          //     console.log(data);
-          //     expect(data).toEqual({
-          //       email: "Invalid Email",
-          //       password: "Password required"
-          //     });
-          //   });
-          expect.assertions(1);
           return wrapper
             .instance()
             .onSubmit()
             .then(data => {
-              console.log(data);
               expect(data).toEqual({
                 email: "Invalid Email",
                 password: "Password required"

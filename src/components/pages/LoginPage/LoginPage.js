@@ -1,9 +1,12 @@
 import React from "react";
 import LoginForm from "../../forms/LoginForm";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { login } from "../../../actions/auth.js";
 
 class LoginPage extends React.Component {
   submit = data => {
-    console.log(data);
+    return this.props.login(data).then(() => this.props.history.push("/"));
   };
   render() {
     return (
@@ -15,4 +18,21 @@ class LoginPage extends React.Component {
   }
 }
 
-export default LoginPage;
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     login
+//     }
+//   }
+// }
+
+LoginPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  login: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { login }
+)(LoginPage);

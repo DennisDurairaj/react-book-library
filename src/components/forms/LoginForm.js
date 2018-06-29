@@ -36,12 +36,12 @@ class LoginForm extends Component {
     return new Promise((resolve, reject) => {
       this.setState({ errors }, () => {
         if (Object.keys(errors).length === 0) {
-          this.props.submit(this.state.data).catch(err =>
+          this.props.submit(this.state.data).catch(err => {
             this.setState({
               errors: err.response.data.errors,
               loading: false
-            })
-          );
+            });
+          });
         }
         resolve(this.state.errors);
       });

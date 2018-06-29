@@ -6,7 +6,9 @@ import { login } from "../../../actions/auth.js";
 
 class LoginPage extends React.Component {
   submit = data => {
-    return this.props.login(data).then(() => this.props.history.push("/"));
+    return this.props
+      .login(data)
+      .then(() => this.props.history.push("/dashboard"));
   };
   render() {
     return (

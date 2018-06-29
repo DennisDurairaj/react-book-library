@@ -4,6 +4,7 @@ import HomePage from "./components/pages/HomePage/HomePage";
 import LoginPage from "./components/pages/LoginPage/LoginPage";
 import DashboardPage from "./components/pages/DashboardPage/DashboardPage";
 import SignupPage from "./components/pages/SignupPage/SignupPage";
+import ConfirmationPage from "./components/pages/ConfirmationPage/ConfirmationPage";
 import UserRoute from "./components/routes/UserRoute";
 import GuestRoute from "./components/routes/GuestRoute";
 
@@ -11,6 +12,12 @@ const App = ({ location }) => {
   return (
     <div className="ui container">
       <Route location={location} path="/" exact component={HomePage} />
+      <Route
+        location={location}
+        path="/confirmation/:token"
+        exact
+        component={ConfirmationPage}
+      />
       <GuestRoute
         location={location}
         path="/login"

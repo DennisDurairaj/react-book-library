@@ -6,6 +6,7 @@ import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import App from "./App";
 import { Provider } from "react-redux";
+import decode from "jwt-decode";
 import registerServiceWorker from "./registerServiceWorker";
 import rootReducer from "./rootReducer";
 import "semantic-ui-css/semantic.min.css";
@@ -17,7 +18,12 @@ const store = createStore(
 );
 
 if (localStorage.JWT) {
-  const user = { token: localStorage.JWT };
+  const payload = decode(localStorage.JWT);
+  const user = {
+    token: localStorage.JWT,
+    email: payload.email,
+    confirmed: payload.confirmed
+  };
   store.dispatch(userLoggedIn(user));
 }
 

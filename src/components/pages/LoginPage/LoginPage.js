@@ -1,6 +1,7 @@
 import React from "react";
 import LoginForm from "../../forms/LoginForm";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { login } from "../../../actions/auth.js";
 
@@ -15,17 +16,11 @@ class LoginPage extends React.Component {
       <div>
         <h1>Login Page</h1>
         <LoginForm submit={this.submit} />
+        <Link to="/forgot_password">Forgot Password</Link>
       </div>
     );
   }
 }
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     login
-//     }
-//   }
-// }
 
 LoginPage.propTypes = {
   history: PropTypes.shape({

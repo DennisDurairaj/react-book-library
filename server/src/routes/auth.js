@@ -1,6 +1,7 @@
 import express from "express";
 import User from "../models/User";
 import { sendResetPasswordEmail } from "../mailer";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -34,6 +35,16 @@ router.post("/reset_password_request", (req, res) => {
       res.json({});
     } else {
       res.status(400).json({ errors: { global: "No such email" } });
+    }
+  });
+});
+
+router.post("/validate_token", (req, res) => {
+  jwt.verify(req.body.token, process.env.JWT_SECRET, err => {
+    if (err) {
+      res.status(401).json({});
+    } else {
+      res.json({});
     }
   });
 });

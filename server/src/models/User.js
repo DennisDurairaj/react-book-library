@@ -39,7 +39,7 @@ schema.methods.generateResetPasswordToken = function generateResetPasswordToken(
       _id: this._id
     },
     process.env.JWT_SECRET,
-    { expiresIn: "1s" }
+    { expiresIn: "1h" }
   );
 };
 
@@ -68,9 +68,9 @@ schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
 };
 
 schema.methods.generateResetPasswordLink = function generateResetPasswordLink() {
-  return `${process.env.HOST}/reset_password/${
-    this.generateResetPasswordToken
-  }`;
+  return `${
+    process.env.HOST
+  }/reset_password/${this.generateResetPasswordToken()}`;
 };
 
 schema.plugin(uniqueValidator, { message: "Email already exists" });

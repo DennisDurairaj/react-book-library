@@ -2,13 +2,19 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Message } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { validateToken } from "../../../actions/auth";
+import { validateToken, resetPassword } from "../../../actions/auth";
+import ResetPasswordForm from "../../forms/ResetPasswordForm";
 
 class ResetPasswordPage extends Component {
   state = {
     loading: true,
     success: false
   };
+
+  submit = data =>
+    this.props
+      .resetPassword(data)
+      .then(() => this.props.history.push("/login"));
 
   componentDidMount() {
     this.props
@@ -32,14 +38,18 @@ class ResetPasswordPage extends Component {
 
 ResetPasswordPage.propTypes = {
   validateToken: PropTypes.func.isRequired,
+  resetPassword: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       token: PropTypes.string.isRequired
-    })
+    }).isRequired
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
   })
 };
 
 export default connect(
   null,
-  { validateToken }
+  { validateToken, resetPassword }
 )(ResetPasswordPage);

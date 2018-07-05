@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Form, Button, Message } from "semantic-ui-react";
-import isEmail from "validator/lib/isEmail";
 import InlineError from "../messages/InlineError";
 
 class ResetPasswordForm extends Component {
@@ -41,6 +40,7 @@ class ResetPasswordForm extends Component {
     if (!data.password) errors.password = "Can't be blank";
     if (data.password !== data.passwordConfirmation)
       errors.password = "Passwords must match";
+    return errors;
   };
 
   render() {
@@ -54,6 +54,17 @@ class ResetPasswordForm extends Component {
             id="password"
             name="password"
             value={data.password}
+            onChange={this.onChange}
+          />
+          {errors.password && <InlineError text={errors.password} />}
+        </Form.Field>
+        <Form.Field error={!!errors.password}>
+          <label htmlFor="passwordConfirmation">Confirm new password</label>
+          <input
+            type="password"
+            id="passwordConfirmation"
+            name="passwordConfirmation"
+            value={data.passwordConfirmation}
             onChange={this.onChange}
           />
           {errors.password && <InlineError text={errors.password} />}

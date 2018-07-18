@@ -1,3 +1,4 @@
 import api from "../api";
 
-export const fetchBooks = data => () => api.user.fetchBooks(data);
+export const fetchBooks = data => () =>
+  api.books.fetchBooks(data).then(books => books);

@@ -1,14 +1,21 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import SearchBookForm from "../../forms/SearchBookForm";
 import { Segment } from "semantic-ui-react";
 import BookForm from "../../forms/BookForm";
+import { fetchPages } from "../../../actions/books";
 
 class NewBookPage extends Component {
   state = {
     book: null
   };
 
-  onBookSelect = book => this.setState({ book });
+  onBookSelect = book => {
+    this.setState({ book });
+    this.props
+      .fetchPages(book.id)
+      .then(pages => this.setState({ book: { ...book, pages } }));
+  };
 
   submit = book => console.log("submitted");
 
@@ -25,4 +32,7 @@ class NewBookPage extends Component {
   }
 }
 
-export default NewBookPage;
+export default connect(
+  null,
+  { fetchPages }
+)(NewBookPage);

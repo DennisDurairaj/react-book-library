@@ -16,9 +16,15 @@ export default {
     resetPassword: data => axios.post("/api/auth/reset_password", { data })
   },
   books: {
-    fetchBooks: data =>
-      axios
+    fetchBooks: data => {
+      return axios
         .get("/api/books/search", { params: { q: data } })
-        .then(res => res.data.books)
+        .then(res => res.data.books);
+    },
+    fetchPages: bookId => {
+      return axios
+        .get("/api/books/fetchPages", { params: { id: bookId } })
+        .then(res => res.data.pages);
+    }
   }
 };

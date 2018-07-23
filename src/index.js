@@ -11,6 +11,7 @@ import registerServiceWorker from "./registerServiceWorker";
 import rootReducer from "./rootReducer";
 import "semantic-ui-css/semantic.min.css";
 import { userLoggedIn } from "./actions/auth";
+import setAuthorizationHeader from "./utils/setAuthorizationHeader";
 
 const store = createStore(
   rootReducer,
@@ -24,6 +25,7 @@ if (localStorage.JWT) {
     email: payload.email,
     confirmed: payload.confirmed
   };
+  setAuthorizationHeader(localStorage.JWT);
   store.dispatch(userLoggedIn(user));
 }
 

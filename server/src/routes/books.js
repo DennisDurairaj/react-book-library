@@ -1,34 +1,47 @@
 import express from "express";
 import authenticate from "../middlewares/authenticate";
+import request from "request-promise";
+import { parseString } from "xml2js";
 
 const router = express.Router();
 router.use(authenticate);
 
 router.get("/search", (req, res) => {
-  res.json({
-    books: [
-      {
-        id: 1,
-        title: "Metro",
-        authors: "Dennis",
-        covers: [
-          "https://images-na.ssl-images-amazon.com/images/I/51smHWpvm9L._SX327_BO1,204,203,200_.jpg",
-          "https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Metro_2033_russian_book_front_cover.jpg/220px-Metro_2033_russian_book_front_cover.jpg"
-        ],
-        pages: 900
-      },
-      {
-        id: 2,
-        title: "Witcher",
-        authors: "Durairaj",
-        covers: [
-          "https://images-na.ssl-images-amazon.com/images/I/51TNOXnzW9L.jpg",
-          "https://upload.wikimedia.org/wikipedia/en/thumb/1/14/Andrzej_Sapkowski_-_The_Last_Wish.jpg/220px-Andrzej_Sapkowski_-_The_Last_Wish.jpg"
-        ],
-        pages: 800
-      }
-    ]
-  });
+  request
+    .get(
+      `https://www.goodreads.com/search/index.xml?key=3LsrvY9UsDbIYNKFbcjA&q=${
+        req.query.q
+      }`
+    )
+    .then(result =>
+      parseString(result, (err, goodreadsResult) =>
+        res.json({
+          books: goodreadsResult.GoodreadsResponse.search[0].results[0].work.map(
+            work => ({
+              id: work.best_book[0].id[0]._,
+              title: work.best_book[0].title[0],
+              authors: work.best_book[0].author[0].name[0],
+              covers: [work.best_book[0].image_url[0]]
+            })
+          )
+        })
+      )
+    );
+});
+
+router.get("/fetchPages", (req, res) => {
+  const id = req.query.id;
+  request
+    .get(
+      `https://www.goodreads.com/book/show/50.xml?key=3LsrvY9UsDbIYNKFbcjA&id=${id}`
+    )
+    .then(result => {
+      return parseString(result, (err, goodreadsResult) =>
+        res.json({
+          pages: goodreadsResult.GoodreadsResponse.book[0].num_pages[0]
+        })
+      );
+    });
 });
 
 export default router;

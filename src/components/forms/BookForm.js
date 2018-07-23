@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Form, Button, Message, Grid, Segment, Image } from "semantic-ui-react";
-import InlineError from "../messages/InlineError";
 
 class BookForm extends Component {
   state = {
@@ -117,7 +116,7 @@ class BookForm extends Component {
                     id="pages"
                     name="pages"
                     placeholder="Pages"
-                    value={data.pages}
+                    value={data.pages ? data.pages : 0}
                     onChange={this.onChangeNumber}
                   />
                 </Form.Field>

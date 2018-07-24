@@ -112,11 +112,12 @@ class BookForm extends Component {
                 <Form.Field error={!!errors.pages}>
                   <label htmlFor="pages">Book Pages</label>
                   <input
-                    type="number"
+                    disabled={data.pages === undefined}
+                    type="text"
                     id="pages"
                     name="pages"
                     placeholder="Pages"
-                    value={data.pages ? data.pages : 0}
+                    value={data.pages !== undefined ? data.pages : "Loading..."}
                     onChange={this.onChangeNumber}
                   />
                 </Form.Field>
@@ -144,11 +145,11 @@ class BookForm extends Component {
 
 BookForm.propTypes = {
   book: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     authors: PropTypes.string.isRequired,
     covers: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    pages: PropTypes.number.isRequired
+    pages: PropTypes.number
   }).isRequired
 };
 

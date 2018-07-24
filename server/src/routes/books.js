@@ -2,9 +2,21 @@ import express from "express";
 import authenticate from "../middlewares/authenticate";
 import request from "request-promise";
 import { parseString } from "xml2js";
+import Book from "../models/Book";
+import parseErrors from "../utils/parseErrors";
 
 const router = express.Router();
 router.use(authenticate);
+
+router.post("/", (req, res) => {
+  Book.create({ ...req.body.book, userId: req.currentUser._id })
+    .then(book => res.json({ book }))
+    .catch(err => res.status(400).json({ errors: parseErrors(err.errors) }));
+});
+
+router.get("/", (req, res) => {
+  Book.find({ userId: req.currentUser._id }).then(books => res.json({ books }));
+});
 
 router.get("/search", (req, res) => {
   request
@@ -36,11 +48,13 @@ router.get("/fetchPages", (req, res) => {
       `https://www.goodreads.com/book/show/50.xml?key=3LsrvY9UsDbIYNKFbcjA&id=${id}`
     )
     .then(result => {
-      return parseString(result, (err, goodreadsResult) =>
+      return parseString(result, (err, goodreadsResult) => {
+        const numPages = goodreadsResult.GoodreadsResponse.book[0].num_pages[0];
+        const pages = numPages ? parseInt(numPages, 10) : 0;
         res.json({
-          pages: goodreadsResult.GoodreadsResponse.book[0].num_pages[0]
-        })
-      );
+          pages
+        });
+      });
     });
 });
 

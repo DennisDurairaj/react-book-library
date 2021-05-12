@@ -23,6 +23,6 @@
     "lodash": "^4.17.10",
     "mongoose": "^5.1.7",
     "mongoose-unique-validator": "^2.0.1",
-    "nodemailer": "^4.6.7"
+    "nodemailer": "^6.4.16"
   }
 }
